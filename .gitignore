@@ -1,0 +1,24 @@
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcscheme
+build/
+DerivedData/
+*.resolved
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V3
+.Trashes
+
+# SwiftPM
+.build/
+.swiftpm/
