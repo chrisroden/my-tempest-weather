@@ -13,6 +13,9 @@ struct DashboardView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                HeaderBannerView()
+                    .padding(.horizontal)
+
                 if let error = viewModel.errorMessage {
                     HStack {
                         Image(systemName: "exclamationmark.triangle.fill")
@@ -67,7 +70,7 @@ struct DashboardView: View {
             }
         }
         .sheet(isPresented: $showSettings) {
-            SettingsView()
+            SettingsView(isPresented: $showSettings)
         }
         .task {
             if viewModel.isConfigured {
@@ -75,9 +78,13 @@ struct DashboardView: View {
                     await viewModel.refresh()
                 }
                 viewModel.startAutoRefresh(intervalMinutes: refreshIntervalMinutes)
+                viewModel.startWebSocket()
             }
         }
-        .onDisappear { viewModel.stopAutoRefresh() }
+        .onDisappear {
+            viewModel.stopAutoRefresh()
+            viewModel.stopWebSocket()
+        }
     }
 }
 

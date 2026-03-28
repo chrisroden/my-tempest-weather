@@ -1,11 +1,15 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.dismiss) private var dismiss
+    /// Passed from the sheet's `isPresented` binding so we can close the sheet
+    /// without being intercepted by the inner `NavigationStack`'s dismiss action.
+    var isPresented: Binding<Bool> = .constant(true)
+
     @Environment(WeatherViewModel.self) private var viewModel
 
     @State private var apiToken: String = ""
     @State private var stationIdText: String = ""
+    @State private var deviceIdText: String = ""
     @State private var refreshInterval: Int = 5
     @State private var saveError: String?
     @State private var saveSuccess = false
@@ -21,10 +25,12 @@ struct SettingsView: View {
                         .autocorrectionDisabled()
                     TextField("Station ID", text: $stationIdText)
                         .keyboardType(.numberPad)
+                    TextField("Device ID", text: $deviceIdText)
+                        .keyboardType(.numberPad)
                 } header: {
                     Text("WeatherFlow Credentials")
                 } footer: {
-                    Text("Find your token and station ID at tempestwx.com → Settings → Data Authorizations.")
+                    Text("Find your token and station ID at tempestwx.com → Settings → Data Authorizations. Device ID enables real-time WebSocket updates.")
                         .font(.caption)
                 }
 
@@ -56,7 +62,7 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") { isPresented.wrappedValue = false }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") { save() }
@@ -73,6 +79,8 @@ struct SettingsView: View {
         apiToken = TempestAPIService.loadApiToken() ?? ""
         let id = TempestAPIService.stationId
         stationIdText = id > 0 ? "\(id)" : ""
+        let devId = TempestAPIService.deviceId
+        deviceIdText = devId > 0 ? "\(devId)" : ""
         refreshInterval = UserDefaults.standard.integer(forKey: "WeatherFlow.refreshIntervalMinutes") == 0
             ? 5
             : UserDefaults.standard.integer(forKey: "WeatherFlow.refreshIntervalMinutes")
@@ -93,6 +101,9 @@ struct SettingsView: View {
 
         TempestAPIService.saveApiToken(apiToken.trimmingCharacters(in: .whitespaces))
         TempestAPIService.stationId = id
+        if let devId = Int(deviceIdText.trimmingCharacters(in: .whitespaces)), devId > 0 {
+            TempestAPIService.deviceId = devId
+        }
         UserDefaults.standard.set(refreshInterval, forKey: "WeatherFlow.refreshIntervalMinutes")
 
         saveSuccess = true
@@ -101,10 +112,12 @@ struct SettingsView: View {
         Task {
             await viewModel.refresh()
             viewModel.startAutoRefresh(intervalMinutes: refreshInterval)
+            viewModel.stopWebSocket()
+            viewModel.startWebSocket()
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            dismiss()
+            isPresented.wrappedValue = false
         }
     }
 }

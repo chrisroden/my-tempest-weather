@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(WeatherViewModel.self) private var viewModel
+    @Binding var showSettings: Bool
 
     var body: some View {
         Group {
@@ -24,12 +25,15 @@ struct ContentView: View {
                 }
             }
         }
+        .sheet(isPresented: $showSettings) {
+            SettingsView(isPresented: $showSettings)
+        }
     }
 
     private enum NavItem: Hashable { case dashboard, settings }
 }
 
 #Preview {
-    ContentView()
+    ContentView(showSettings: .constant(false))
         .environment(WeatherViewModel())
 }

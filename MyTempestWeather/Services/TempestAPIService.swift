@@ -8,12 +8,13 @@ struct TempestAPIService {
     // MARK: - UserDefaults keys
 
     private enum DefaultsKey {
-        static let stationId = "WeatherFlow.stationId"
-        static let tempUnits = "WeatherFlow.tempUnits"
-        static let windUnits = "WeatherFlow.windUnits"
-        static let pressureUnits = "WeatherFlow.pressureUnits"
-        static let precipUnits = "WeatherFlow.precipUnits"
-        static let distanceUnits = "WeatherFlow.distanceUnits"
+        static let stationId      = "WeatherFlow.stationId"
+        static let deviceId       = "WeatherFlow.deviceId"
+        static let tempUnits      = "WeatherFlow.tempUnits"
+        static let windUnits      = "WeatherFlow.windUnits"
+        static let pressureUnits  = "WeatherFlow.pressureUnits"
+        static let precipUnits    = "WeatherFlow.precipUnits"
+        static let distanceUnits  = "WeatherFlow.distanceUnits"
     }
 
     // MARK: - Keychain key
@@ -67,6 +68,11 @@ struct TempestAPIService {
     static var stationId: Int {
         get { UserDefaults.standard.integer(forKey: DefaultsKey.stationId) }
         set { UserDefaults.standard.set(newValue, forKey: DefaultsKey.stationId) }
+    }
+
+    static var deviceId: Int {
+        get { UserDefaults.standard.integer(forKey: DefaultsKey.deviceId) }
+        set { UserDefaults.standard.set(newValue, forKey: DefaultsKey.deviceId) }
     }
 
     // MARK: - Fetch forecast

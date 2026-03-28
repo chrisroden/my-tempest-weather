@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 // MARK: - Top-level response
 
@@ -275,16 +276,16 @@ extension String {
     }
 
     /// Colour tint for the weather icon.
-    var iconTint: String {
+    var iconTint: Color {
         switch self {
-        case "clear-day":                   return "yellow"
-        case "clear-night":                 return "indigo"
+        case "clear-day":                   return .yellow
+        case "clear-night":                 return .indigo
         case "snow", "possibly-snow-day",
-             "possibly-snow-night":         return "cyan"
+             "possibly-snow-night":         return .cyan
         case "thunderstorm",
              "possibly-thunderstorm-day",
-             "possibly-thunderstorm-night": return "yellow"
-        default:                            return "blue"
+             "possibly-thunderstorm-night": return .yellow
+        default:                            return .blue
         }
     }
 }

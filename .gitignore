@@ -22,3 +22,5 @@ DerivedData/
 # SwiftPM
 .build/
 .swiftpm/
+
+.fake

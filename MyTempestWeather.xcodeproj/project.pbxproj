@@ -15,6 +15,9 @@
 		B0010014 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010015 /* MetricsView.swift */; };
 		B0010016 /* ForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010017 /* ForecastView.swift */; };
 		B0010018 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010019 /* SettingsView.swift */; };
+		B0010024 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010025 /* SplashView.swift */; };
+		B0010027 /* HeaderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010026 /* HeaderBannerView.swift */; };
+		B0010029 /* TempestWebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010028 /* TempestWebSocketService.swift */; };
 		B001001A /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001001B /* WeatherModels.swift */; };
 		B001001C /* TempestAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001001D /* TempestAPIService.swift */; };
 		B001001E /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001001F /* WeatherViewModel.swift */; };
@@ -31,6 +34,9 @@
 		B0010015 /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 		B0010017 /* ForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastView.swift; sourceTree = "<group>"; };
 		B0010019 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B0010025 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		B0010026 /* HeaderBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderBannerView.swift; sourceTree = "<group>"; };
+		B0010028 /* TempestWebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempestWebSocketService.swift; sourceTree = "<group>"; };
 		B001001B /* WeatherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModels.swift; sourceTree = "<group>"; };
 		B001001D /* TempestAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempestAPIService.swift; sourceTree = "<group>"; };
 		B001001F /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
@@ -84,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				B001001D /* TempestAPIService.swift */,
+				B0010028 /* TempestWebSocketService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -106,6 +113,8 @@
 				B0010015 /* MetricsView.swift */,
 				B0010017 /* ForecastView.swift */,
 				B0010019 /* SettingsView.swift */,
+				B0010025 /* SplashView.swift */,
+				B0010026 /* HeaderBannerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -115,11 +124,10 @@
 			children = (
 				B0010023 /* Preview Assets.xcassets */,
 			);
-			name = "Preview Content";
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		B003FFFF /* / */ = {
+		B003FFFF = {
 			isa = PBXGroup;
 			children = (
 				B0010033 /* MyTempestWeather */,
@@ -155,7 +163,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					B0010040 = {
 						CreatedOnToolsVersion = 15.4;
@@ -205,6 +213,9 @@
 				B0010014 /* MetricsView.swift in Sources */,
 				B0010016 /* ForecastView.swift in Sources */,
 				B0010018 /* SettingsView.swift in Sources */,
+				B0010024 /* SplashView.swift in Sources */,
+				B0010027 /* HeaderBannerView.swift in Sources */,
+				B0010029 /* TempestWebSocketService.swift in Sources */,
 				B001001A /* WeatherModels.swift in Sources */,
 				B001001C /* TempestAPIService.swift in Sources */,
 				B001001E /* WeatherViewModel.swift in Sources */,
@@ -252,6 +263,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -271,6 +283,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -314,6 +327,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -325,6 +339,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -339,6 +354,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyTempestWeather/Preview Content\"";
+				DEVELOPMENT_TEAM = VRXZ4JM57K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Tempest Weather";
@@ -351,7 +367,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.chrisroden.MyTempestWeather";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chrisroden.MyTempestWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -371,6 +387,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyTempestWeather/Preview Content\"";
+				DEVELOPMENT_TEAM = VRXZ4JM57K;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Tempest Weather";
@@ -383,7 +400,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.chrisroden.MyTempestWeather";
+				PRODUCT_BUNDLE_IDENTIFIER = com.chrisroden.MyTempestWeather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

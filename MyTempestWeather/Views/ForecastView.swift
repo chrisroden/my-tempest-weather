@@ -47,12 +47,12 @@ private struct DayCard: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            if let pop = day.precipProbability, pop > 0 {
+            if day.precipProbability > 0 {
                 HStack(spacing: 2) {
                     Image(systemName: "drop.fill")
                         .font(.caption2)
                         .foregroundStyle(.blue)
-                    Text("\(pop)%")
+                    Text("\(day.precipProbability)%")
                         .font(.caption2)
                         .foregroundStyle(.blue)
                 }
