@@ -87,6 +87,10 @@ final class WeatherViewModel {
         Array((forecastResponse?.forecast.daily ?? []).prefix(7))
     }
 
+    func hourlyForecasts(for day: DailyForecast) -> [HourlyForecast] {
+        (forecastResponse?.forecast.hourly ?? []).filter { $0.localDay == day.dayNum }
+    }
+
     // MARK: - Unit symbols
 
     var tempUnits: String {

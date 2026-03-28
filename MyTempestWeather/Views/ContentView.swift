@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(WeatherViewModel.self) private var viewModel
     @Binding var showSettings: Bool
+    @State private var columnVisibility = NavigationSplitViewVisibility.detailOnly
 
     var body: some View {
         Group {
@@ -14,7 +15,7 @@ struct ContentView: View {
                         .tabItem { Label("Settings", systemImage: "gear") }
                 }
             } else {
-                NavigationSplitView {
+                NavigationSplitView(columnVisibility: $columnVisibility) {
                     List {
                         NavigationLink("Dashboard", value: NavItem.dashboard)
                         NavigationLink("Settings",  value: NavItem.settings)

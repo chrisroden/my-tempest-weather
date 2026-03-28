@@ -36,6 +36,7 @@ GET https://swd.weatherflow.com/swd/rest/better_forecast
 Credentials are stored securely:
 - **API token** → iOS Keychain (`service: "com.chrisroden.MyTempestWeather"`, `account: "WeatherFlowApiToken"`)
 - **Station ID** → `UserDefaults` key `"WeatherFlow.stationId"`
+- **Device ID** → `UserDefaults` key `"WeatherFlow.deviceId"` (required for WebSocket subscriptions)
 - **Refresh interval** → `UserDefaults` key `"WeatherFlow.refreshIntervalMinutes"` (default: 5)
 
 ---
@@ -69,7 +70,8 @@ my-tempest-weather/
     ├── Models/
     │   └── WeatherModels.swift          // All Codable models + SF Symbol mapping
     ├── Services/
-    │   └── TempestAPIService.swift      // REST client + Keychain + UserDefaults
+    │   ├── TempestAPIService.swift      // REST client + Keychain + UserDefaults
+    │   └── TempestWebSocketService.swift // Real-time WebSocket stream, rapid_wind + obs_st
     ├── ViewModels/
     │   └── WeatherViewModel.swift       // @Observable, auto-refresh timer
     ├── Views/
@@ -78,7 +80,7 @@ my-tempest-weather/
     │   ├── CurrentConditionsView.swift  // Temp, icon, feels-like/high/low
     │   ├── WindView.swift               // SwiftUI compass rose + speed/gust/cardinal
     │   ├── MetricsView.swift            // Humidity, pressure, UV, precip, lightning
-    │   ├── ForecastView.swift           // Horizontal 7-day strip
+    │   ├── ForecastView.swift           // Horizontal 7-day strip + collapsible hourly row
     │   └── SettingsView.swift           // SecureField token, station ID, refresh picker
     ├── Assets.xcassets/
     │   ├── AccentColor.colorset/        // Sky blue (#219CF3)
@@ -96,15 +98,36 @@ my-tempest-weather/
 - `isConfigured: Bool` — returns `true` when Keychain token exists and `stationId > 0`
 - `refresh() async` — calls `TempestAPIService().fetchForecast()`, sets `forecastResponse`, `lastUpdated`, `errorMessage`
 - `startAutoRefresh(intervalMinutes:)` / `stopAutoRefresh()` — manages a background `Task` with `Task.sleep`
-- All display properties (`currentTemperature`, `windSpeed`, `dailyForecasts`, etc.) are computed from `forecastResponse`
+- `startWebSocket()` / `stopWebSocket()` — creates a `TempestWebSocketService`, wires its callbacks, and calls `connect(token:deviceId:)`
+- `isWebSocketConnected: Bool` — reflects live connection state from `onConnectionChange`
+- Display properties (`currentTemperature`, `windSpeed`, `windGust`, `windDirection`, `relativeHumidity`, `seaLevelPressure`, `uvIndex`, `precipAccumLocalDay`) prefer **live WebSocket values** when available, falling back to the last REST response
+- All display properties (`dailyForecasts`, `feelsLike`, `todayHigh/Low`, etc.) that have no WebSocket equivalent are computed from `forecastResponse`
+- `hourlyForecasts(for day: DailyForecast) -> [HourlyForecast]` — filters `forecast.hourly` where `localDay == day.dayNum`
 
 ### TempestAPIService
 
 - `static func saveApiToken(_ token: String)` — writes to Keychain
 - `static func loadApiToken() -> String?` — reads from Keychain
 - `static func deleteApiToken()` — deletes from Keychain
-- `static var stationId: Int` — get/set via `UserDefaults`
+- `static var stationId: Int` — get/set via `UserDefaults` (`"WeatherFlow.stationId"`)
+- `static var deviceId: Int` — get/set via `UserDefaults` (`"WeatherFlow.deviceId"`); required for WebSocket subscriptions
 - `func fetchForecast() async throws -> ForecastResponse` — builds URL, calls `URLSession.shared.data(for:)`, decodes JSON
+
+### TempestWebSocketService
+
+Connects to the WeatherFlow real-time WebSocket stream (`wss://ws.weatherflow.com/swd/data?token={token}`).
+
+- `connect(token:deviceId:)` / `disconnect()` — start/stop the connection
+- Subscribes to two channels on connection open:
+  - `listen_rapid_start` — wind speed + direction every ~3 s (`rapid_wind` event)
+  - `listen_start` — full station observation every ~1 min (`obs_st` event)
+- Exposes three callbacks (always delivered on `MainActor`):
+  - `onRapidWind: (speedMps: Double, directionDeg: Int) -> Void`
+  - `onObsSt: ([Double?]) -> Void` — obs array indices: `[3]` gust, `[6]` pressure, `[7]` air temp °C, `[8]` humidity, `[10]` UV, `[18]` precip day mm
+  - `onConnectionChange: (Bool) -> Void`
+- Sends a `ping` message every 30 s to keep the connection alive
+- Reconnects with exponential back-off (2 s → 4 s → … → 60 s cap) on any error or delegate-initiated close
+- `isConnected: Bool` — read-only published state
 
 ### WeatherModels
 
@@ -133,9 +156,24 @@ All models are `Codable` with `CodingKeys` for snake_case JSON. Key models:
 - [ ] **Signing** — Open in Xcode → Signing & Capabilities → set your Apple Developer Team.
 - [ ] **iPad/Mac layout polish** — `ContentView` uses `NavigationSplitView` but the sidebar `NavigationLink` for Settings only pushes `DashboardView` in the detail column. The Settings link should push `SettingsView` into the detail column instead of (or in addition to) the toolbar sheet.
 - [ ] **Unit preferences UI** — `WeatherViewModel` reads `UserDefaults` keys for `WeatherFlow.tempUnits`, `WeatherFlow.windUnits`, `WeatherFlow.pressureUnits`, `WeatherFlow.precipUnits` but `SettingsView` does not yet expose pickers for those. Currently they default to `f`, `mph`, `mb`, `in`.
-- [ ] **Hourly forecast** — `HourlyForecast` model exists but there is no hourly view yet.
+- [x] **Hourly forecast** — Tap any `DayCard` in `ForecastView` to expand a collapsible `HourlyStrip` below the day row; tap the same card again to collapse. Animated with `.easeInOut(duration: 0.3)` + `.move(edge: .top).combined(with: .opacity)` transition.
 - [ ] **Widgets / Live Activities** — not yet implemented.
 - [ ] **Dark mode accent** — only a single light-mode accent colour is defined. Consider adding a dark-mode variant in `AccentColor.colorset`.
+
+---
+
+## Git remotes
+
+| Remote | URL |
+|--------|-----|
+| `origin` | `https://github.com/chrisroden/my-tempest-weather.git` |
+| `ado` | `https://chrisroden@dev.azure.com/chrisroden/Tempest%20Weather%20Station%20Console/_git/my-tempest-weather` |
+
+Push to both remotes when shipping changes:
+```bash
+git push origin
+git push ado
+```
 
 ---
 
@@ -160,4 +198,5 @@ open ~/Repos/Personal/my-tempest-weather/MyTempestWeather.xcodeproj
 - Secrets always go to Keychain; never `UserDefaults` for sensitive values.
 - Unit symbols are derived from ViewModel computed properties (`tempUnitSymbol`, `windUnitSymbol`, etc.) — do not hardcode them in views.
 - New metric tiles follow the `MetricTile` private struct pattern in `MetricsView.swift`.
-- New forecast data follows the `DayCard` private struct pattern in `ForecastView.swift`.
+- New daily forecast rows follow the `DayRow` private struct pattern in `ForecastView.swift`.
+- New hourly forecast cards follow the `HourCard` private struct pattern in `ForecastView.swift`.

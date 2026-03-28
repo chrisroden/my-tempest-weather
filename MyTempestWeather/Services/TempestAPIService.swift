@@ -30,6 +30,7 @@ struct TempestAPIService {
             kSecClass: kSecClassGenericPassword,
             kSecAttrService: keychainService,
             kSecAttrAccount: keychainAccount,
+            kSecAttrAccessible: kSecAttrAccessibleWhenUnlocked,
             kSecValueData: data
         ]
         SecItemDelete(query as CFDictionary)

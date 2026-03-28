@@ -15,17 +15,18 @@
 		B0010014 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010015 /* MetricsView.swift */; };
 		B0010016 /* ForecastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010017 /* ForecastView.swift */; };
 		B0010018 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010019 /* SettingsView.swift */; };
-		B0010024 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010025 /* SplashView.swift */; };
-		B0010027 /* HeaderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010026 /* HeaderBannerView.swift */; };
-		B0010029 /* TempestWebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010028 /* TempestWebSocketService.swift */; };
 		B001001A /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001001B /* WeatherModels.swift */; };
 		B001001C /* TempestAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001001D /* TempestAPIService.swift */; };
 		B001001E /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001001F /* WeatherViewModel.swift */; };
 		B0010020 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0010021 /* Assets.xcassets */; };
 		B0010022 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0010023 /* Preview Assets.xcassets */; };
+		B0010024 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010025 /* SplashView.swift */; };
+		B0010027 /* HeaderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010026 /* HeaderBannerView.swift */; };
+		B0010029 /* TempestWebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010028 /* TempestWebSocketService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9FA913B92F780668008AEE32 /* MyTempestWeather.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyTempestWeather.entitlements; sourceTree = "<group>"; };
 		B001000B /* MyTempestWeatherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTempestWeatherApp.swift; sourceTree = "<group>"; };
 		B001000D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B001000F /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -34,14 +35,14 @@
 		B0010015 /* MetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 		B0010017 /* ForecastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastView.swift; sourceTree = "<group>"; };
 		B0010019 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		B0010025 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
-		B0010026 /* HeaderBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderBannerView.swift; sourceTree = "<group>"; };
-		B0010028 /* TempestWebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempestWebSocketService.swift; sourceTree = "<group>"; };
 		B001001B /* WeatherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModels.swift; sourceTree = "<group>"; };
 		B001001D /* TempestAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempestAPIService.swift; sourceTree = "<group>"; };
 		B001001F /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
 		B0010021 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B0010023 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		B0010025 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		B0010026 /* HeaderBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderBannerView.swift; sourceTree = "<group>"; };
+		B0010028 /* TempestWebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempestWebSocketService.swift; sourceTree = "<group>"; };
 		B0010030 /* MyTempestWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTempestWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -67,6 +68,7 @@
 		B0010033 /* MyTempestWeather */ = {
 			isa = PBXGroup;
 			children = (
+				9FA913B92F780668008AEE32 /* MyTempestWeather.entitlements */,
 				B001000B /* MyTempestWeatherApp.swift */,
 				B0010035 /* Models */,
 				B0010036 /* Services */,
@@ -351,6 +353,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyTempestWeather/MyTempestWeather.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyTempestWeather/Preview Content\"";
@@ -384,6 +387,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MyTempestWeather/MyTempestWeather.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MyTempestWeather/Preview Content\"";
