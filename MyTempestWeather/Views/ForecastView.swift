@@ -64,16 +64,16 @@ private struct DayRow: View {
     var body: some View {
         HStack(spacing: 12) {
             Text(day.weekdayLabel)
-                .font(.subheadline.bold())
+                .font(sizeClass == .regular ? .title3.bold() : .subheadline.bold())
                 .foregroundStyle(isExpanded ? Color.accentColor : .primary)
-                .frame(width: 42, alignment: .leading)
+                .frame(width: sizeClass == .regular ? 84 : 42, alignment: .leading)
 
-            WeatherIconView(slug: day.icon, size: 24)
-                .frame(width: 28)
+            WeatherIconView(slug: day.icon, size: sizeClass == .regular ? 48 : 24)
+                .frame(width: sizeClass == .regular ? 56 : 28)
 
             if sizeClass == .regular {
                 Text(day.conditions)
-                    .font(.subheadline)
+                    .font(.title3)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
@@ -82,10 +82,10 @@ private struct DayRow: View {
 
             HStack(spacing: 3) {
                 Image(systemName: "drop.fill")
-                    .font(.caption2)
+                    .font(sizeClass == .regular ? .caption : .caption2)
                     .foregroundStyle(day.precipProbability > 0 ? Color.blue : Color.secondary)
                 Text("\(day.precipProbability)%")
-                    .font(.caption)
+                    .font(sizeClass == .regular ? .subheadline : .caption)
                     .foregroundStyle(day.precipProbability > 0 ? Color.blue : Color.secondary)
             }
             .fixedSize()
@@ -93,15 +93,15 @@ private struct DayRow: View {
             HStack(spacing: 4) {
                 if lowFirst {
                     Text(low)
-                        .font(.subheadline)
+                        .font(sizeClass == .regular ? .title3 : .subheadline)
                         .foregroundStyle(.secondary)
                     Text(high)
-                        .font(.subheadline.bold())
+                        .font(sizeClass == .regular ? .title3.bold() : .subheadline.bold())
                 } else {
                     Text(high)
-                        .font(.subheadline.bold())
+                        .font(sizeClass == .regular ? .title3.bold() : .subheadline.bold())
                     Text(low)
-                        .font(.subheadline)
+                        .font(sizeClass == .regular ? .title3 : .subheadline)
                         .foregroundStyle(.secondary)
                 }
             }
@@ -113,7 +113,7 @@ private struct DayRow: View {
                 .rotationEffect(.degrees(isExpanded ? 90 : 0))
                 .animation(.easeInOut(duration: 0.3), value: isExpanded)
         }
-        .padding(.vertical, 10)
+        .padding(.vertical, sizeClass == .regular ? 20 : 10)
         .contentShape(Rectangle())
         .onTapGesture(perform: onTap)
     }
@@ -154,30 +154,32 @@ private struct HourCard: View {
     let hour: HourlyForecast
     let viewModel: WeatherViewModel
 
+    @Environment(\.horizontalSizeClass) private var sizeClass
+
     var body: some View {
         VStack(spacing: 5) {
             Text(hourLabel)
-                .font(.caption2.bold())
+                .font(sizeClass == .regular ? .caption.bold() : .caption2.bold())
                 .foregroundStyle(.secondary)
 
-            WeatherIconView(slug: hour.icon, size: 20)
-                .frame(height: 24)
+            WeatherIconView(slug: hour.icon, size: sizeClass == .regular ? 40 : 20)
+                .frame(height: sizeClass == .regular ? 48 : 24)
 
             Text(temp)
-                .font(.caption.bold())
+                .font(sizeClass == .regular ? .subheadline.bold() : .caption.bold())
 
             HStack(spacing: 2) {
                 Image(systemName: "drop.fill")
-                    .font(.caption2)
+                    .font(sizeClass == .regular ? .caption : .caption2)
                     .foregroundStyle(hour.precipProbability > 0 ? Color.blue : Color.secondary)
                 Text("\(Int(hour.precipProbability))%")
-                    .font(.caption2)
+                    .font(sizeClass == .regular ? .caption : .caption2)
                     .foregroundStyle(hour.precipProbability > 0 ? Color.blue : Color.secondary)
             }
         }
-        .frame(width: 52)
-        .padding(.vertical, 8)
-        .padding(.horizontal, 4)
+        .frame(width: sizeClass == .regular ? 104 : 52)
+        .padding(.vertical, sizeClass == .regular ? 16 : 8)
+        .padding(.horizontal, sizeClass == .regular ? 8 : 4)
         .background(.quaternary, in: RoundedRectangle(cornerRadius: 10))
     }
 
