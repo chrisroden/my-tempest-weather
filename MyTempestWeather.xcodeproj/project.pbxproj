@@ -23,6 +23,7 @@
 		B0010024 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010025 /* SplashView.swift */; };
 		B0010027 /* HeaderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010026 /* HeaderBannerView.swift */; };
 		B0010029 /* TempestWebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010028 /* TempestWebSocketService.swift */; };
+		B001002A /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001002B /* WeatherIconView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		B0010025 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		B0010026 /* HeaderBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderBannerView.swift; sourceTree = "<group>"; };
 		B0010028 /* TempestWebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempestWebSocketService.swift; sourceTree = "<group>"; };
+		B001002B /* WeatherIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconView.swift; sourceTree = "<group>"; };
 		B0010030 /* MyTempestWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTempestWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -117,6 +119,7 @@
 				B0010019 /* SettingsView.swift */,
 				B0010025 /* SplashView.swift */,
 				B0010026 /* HeaderBannerView.swift */,
+				B001002B /* WeatherIconView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				B0010024 /* SplashView.swift in Sources */,
 				B0010027 /* HeaderBannerView.swift in Sources */,
 				B0010029 /* TempestWebSocketService.swift in Sources */,
+				B001002A /* WeatherIconView.swift in Sources */,
 				B001001A /* WeatherModels.swift in Sources */,
 				B001001C /* TempestAPIService.swift in Sources */,
 				B001001E /* WeatherViewModel.swift in Sources */,

@@ -13,6 +13,10 @@ struct SettingsView: View {
     @State private var refreshInterval: Int = 5
     @State private var saveError: String?
     @State private var saveSuccess = false
+    @State private var tempUnits: String = "f"
+    @State private var windUnits: String = "mph"
+    @State private var pressureUnits: String = "mb"
+    @State private var precipUnits: String = "in"
 
     private let refreshOptions = [1, 2, 5, 10, 15, 30]
 
@@ -39,6 +43,29 @@ struct SettingsView: View {
                         ForEach(refreshOptions, id: \.self) { mins in
                             Text(mins == 1 ? "1 minute" : "\(mins) minutes").tag(mins)
                         }
+                    }
+                }
+
+                Section("Display Units") {
+                    Picker("Temperature", selection: $tempUnits) {
+                        Text("°F").tag("f")
+                        Text("°C").tag("c")
+                    }
+                    Picker("Wind Speed", selection: $windUnits) {
+                        Text("mph").tag("mph")
+                        Text("km/h").tag("kph")
+                        Text("Knots").tag("kts")
+                        Text("m/s").tag("mps")
+                    }
+                    Picker("Pressure", selection: $pressureUnits) {
+                        Text("mb").tag("mb")
+                        Text("hPa").tag("hpa")
+                        Text("inHg").tag("inhg")
+                        Text("mmHg").tag("mmhg")
+                    }
+                    Picker("Precipitation", selection: $precipUnits) {
+                        Text("in").tag("in")
+                        Text("mm").tag("mm")
                     }
                 }
 
@@ -84,6 +111,10 @@ struct SettingsView: View {
         refreshInterval = UserDefaults.standard.integer(forKey: "WeatherFlow.refreshIntervalMinutes") == 0
             ? 5
             : UserDefaults.standard.integer(forKey: "WeatherFlow.refreshIntervalMinutes")
+        tempUnits     = UserDefaults.standard.string(forKey: "WeatherFlow.tempUnits")     ?? "f"
+        windUnits     = UserDefaults.standard.string(forKey: "WeatherFlow.windUnits")     ?? "mph"
+        pressureUnits = UserDefaults.standard.string(forKey: "WeatherFlow.pressureUnits") ?? "mb"
+        precipUnits   = UserDefaults.standard.string(forKey: "WeatherFlow.precipUnits")   ?? "in"
     }
 
     private func save() {
@@ -105,6 +136,10 @@ struct SettingsView: View {
             TempestAPIService.deviceId = devId
         }
         UserDefaults.standard.set(refreshInterval, forKey: "WeatherFlow.refreshIntervalMinutes")
+        UserDefaults.standard.set(tempUnits,     forKey: "WeatherFlow.tempUnits")
+        UserDefaults.standard.set(windUnits,     forKey: "WeatherFlow.windUnits")
+        UserDefaults.standard.set(pressureUnits, forKey: "WeatherFlow.pressureUnits")
+        UserDefaults.standard.set(precipUnits,   forKey: "WeatherFlow.precipUnits")
 
         saveSuccess = true
 

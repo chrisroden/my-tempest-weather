@@ -154,11 +154,11 @@ All models are `Codable` with `CodingKeys` for snake_case JSON. Key models:
 
 - [ ] **App icon** — `Assets.xcassets/AppIcon.appiconset/` has a placeholder `Contents.json` only. A 1024×1024 PNG needs to be added and the `Contents.json` updated with the filename.
 - [ ] **Signing** — Open in Xcode → Signing & Capabilities → set your Apple Developer Team.
-- [ ] **iPad/Mac layout polish** — `ContentView` uses `NavigationSplitView` but the sidebar `NavigationLink` for Settings only pushes `DashboardView` in the detail column. The Settings link should push `SettingsView` into the detail column instead of (or in addition to) the toolbar sheet.
-- [ ] **Unit preferences UI** — `WeatherViewModel` reads `UserDefaults` keys for `WeatherFlow.tempUnits`, `WeatherFlow.windUnits`, `WeatherFlow.pressureUnits`, `WeatherFlow.precipUnits` but `SettingsView` does not yet expose pickers for those. Currently they default to `f`, `mph`, `mb`, `in`.
+- [x] **iPad/Mac layout polish** — `ContentView` uses `NavigationSplitView` with `List(selection:)` sidebar; selecting Settings pushes `SettingsView` into the detail column.
+- [x] **Unit preferences UI** — `SettingsView` now exposes pickers for temperature, wind speed, pressure, and precipitation units, saved to `UserDefaults` and used by the next REST fetch.
 - [x] **Hourly forecast** — Tap any `DayCard` in `ForecastView` to expand a collapsible `HourlyStrip` below the day row; tap the same card again to collapse. Animated with `.easeInOut(duration: 0.3)` + `.move(edge: .top).combined(with: .opacity)` transition.
 - [ ] **Widgets / Live Activities** — not yet implemented.
-- [ ] **Dark mode accent** — only a single light-mode accent colour is defined. Consider adding a dark-mode variant in `AccentColor.colorset`.
+- [x] **Dark mode accent** — dark variant `#5BB8FF` (r:0.357, g:0.722, b:1.000) added to `AccentColor.colorset` with `luminosity: dark` appearance.
 
 ---
 

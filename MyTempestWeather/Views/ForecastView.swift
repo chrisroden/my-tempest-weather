@@ -68,10 +68,7 @@ private struct DayRow: View {
                 .foregroundStyle(isExpanded ? Color.accentColor : .primary)
                 .frame(width: 42, alignment: .leading)
 
-            Image(systemName: day.icon.sfSymbol)
-                .symbolRenderingMode(.multicolor)
-                .font(.title3)
-                .foregroundStyle(day.icon.iconTint)
+            WeatherIconView(slug: day.icon, size: 24)
                 .frame(width: 28)
 
             if sizeClass == .regular {
@@ -94,11 +91,19 @@ private struct DayRow: View {
             .fixedSize()
 
             HStack(spacing: 4) {
-                Text(high)
-                    .font(.subheadline.bold())
-                Text(low)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                if lowFirst {
+                    Text(low)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Text(high)
+                        .font(.subheadline.bold())
+                } else {
+                    Text(high)
+                        .font(.subheadline.bold())
+                    Text(low)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
             }
             .fixedSize()
 
@@ -119,6 +124,7 @@ private struct DayRow: View {
     private var low: String {
         "\(Int(day.airTempLow.rounded()))\(viewModel.tempUnitSymbol)"
     }
+    private var lowFirst: Bool { viewModel.lowBeforeHigh(for: day) }
 }
 
 // MARK: - Hourly Strip
@@ -154,10 +160,7 @@ private struct HourCard: View {
                 .font(.caption2.bold())
                 .foregroundStyle(.secondary)
 
-            Image(systemName: hour.icon.sfSymbol)
-                .symbolRenderingMode(.multicolor)
-                .font(.body)
-                .foregroundStyle(hour.icon.iconTint)
+            WeatherIconView(slug: hour.icon, size: 20)
                 .frame(height: 24)
 
             Text(temp)

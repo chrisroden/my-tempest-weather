@@ -5,12 +5,7 @@ struct CurrentConditionsView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            Image(systemName: viewModel.weatherIcon.sfSymbol)
-                .symbolRenderingMode(.multicolor)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 64)
-                .foregroundStyle(viewModel.weatherIcon.iconTint)
+            WeatherIconView(slug: viewModel.weatherIcon, size: 64)
 
             Text(temperatureString(viewModel.currentTemperature))
                 .font(.system(size: 56, weight: .thin, design: .rounded))
@@ -25,8 +20,13 @@ struct CurrentConditionsView: View {
 
             HStack(spacing: 24) {
                 LabeledValue(label: "Feels", value: temperatureString(viewModel.feelsLike))
-                LabeledValue(label: "High",  value: temperatureString(viewModel.todayHigh))
-                LabeledValue(label: "Low",   value: temperatureString(viewModel.todayLow))
+                if viewModel.todayLowBeforeHigh {
+                    LabeledValue(label: "Low",  value: temperatureString(viewModel.todayLow))
+                    LabeledValue(label: "High", value: temperatureString(viewModel.todayHigh))
+                } else {
+                    LabeledValue(label: "High", value: temperatureString(viewModel.todayHigh))
+                    LabeledValue(label: "Low",  value: temperatureString(viewModel.todayLow))
+                }
             }
             .font(.subheadline)
         }

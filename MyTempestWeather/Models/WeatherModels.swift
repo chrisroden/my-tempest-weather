@@ -264,28 +264,14 @@ extension String {
         case "possibly-sleet-night":        return "cloud.sleet.fill"
         case "possibly-snow-day":           return "cloud.snow.fill"
         case "possibly-snow-night":         return "cloud.snow.fill"
-        case "possibly-thunderstorm-day":   return "cloud.sun.bolt.fill"
-        case "possibly-thunderstorm-night": return "cloud.moon.bolt.fill"
+        case "possibly-thunderstorm-day":   return "cloud.bolt.fill"
+        case "possibly-thunderstorm-night": return "cloud.bolt.fill"
         case "rainy":                       return "cloud.rain.fill"
         case "sleet":                       return "cloud.sleet.fill"
         case "snow":                        return "snowflake"
         case "thunderstorm":                return "cloud.bolt.rain.fill"
         case "windy":                       return "wind"
         default:                            return "cloud.fill"
-        }
-    }
-
-    /// Colour tint for the weather icon.
-    var iconTint: Color {
-        switch self {
-        case "clear-day":                   return .yellow
-        case "clear-night":                 return .indigo
-        case "snow", "possibly-snow-day",
-             "possibly-snow-night":         return .cyan
-        case "thunderstorm",
-             "possibly-thunderstorm-day",
-             "possibly-thunderstorm-night": return .yellow
-        default:                            return .blue
         }
     }
 }

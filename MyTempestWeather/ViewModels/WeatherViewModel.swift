@@ -91,6 +91,21 @@ final class WeatherViewModel {
         (forecastResponse?.forecast.hourly ?? []).filter { $0.localDay == day.dayNum }
     }
 
+    /// Returns `true` if the daily low temperature occurs earlier in the day than the daily high,
+    /// based on hourly forecast data. Falls back to `false` (high left) when hourly data is unavailable.
+    func lowBeforeHigh(for day: DailyForecast) -> Bool {
+        let hours = hourlyForecasts(for: day)
+        guard !hours.isEmpty else { return false }
+        guard let minHour = hours.min(by: { $0.airTemperature < $1.airTemperature }),
+              let maxHour = hours.max(by: { $0.airTemperature < $1.airTemperature }) else { return false }
+        return minHour.localHour < maxHour.localHour
+    }
+
+    var todayLowBeforeHigh: Bool {
+        guard let today = forecastResponse?.forecast.daily.first else { return false }
+        return lowBeforeHigh(for: today)
+    }
+
     // MARK: - Unit symbols
 
     var tempUnits: String {
