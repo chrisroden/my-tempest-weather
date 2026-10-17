@@ -24,3 +24,5 @@ DerivedData/
 .swiftpm/
 
 .fake
+# Proxyman captures (contain tokens)
+Proximan/

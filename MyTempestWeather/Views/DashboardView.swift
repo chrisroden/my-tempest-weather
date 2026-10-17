@@ -45,6 +45,11 @@ struct DashboardView: View {
                     Text("Updated \(updated.formatted(.relative(presentation: .named)))")
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .padding(.bottom, viewModel.isStationSelected ? 8 : 0)
+                }
+
+                if !viewModel.isStationSelected {
+                    WeatherAttributionView()
                         .padding(.bottom, 8)
                 }
             }

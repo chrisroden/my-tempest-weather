@@ -39,12 +39,15 @@ struct MetricsView: View {
                     label: "Precip 24h",
                     value: "\(String(format: "%.2f", viewModel.precipAccumLocalDay)) \(viewModel.precipUnitSymbol)"
                 )
-                MetricTile(
-                    symbol: "bolt.fill",
-                    tint: .yellow,
-                    label: "Lightning 1h",
-                    value: "\(viewModel.lightningLast1hr)"
-                )
+                // Lightning counts come from the station's sensor; WeatherKit has no equivalent.
+                if viewModel.isStationSelected {
+                    MetricTile(
+                        symbol: "bolt.fill",
+                        tint: .yellow,
+                        label: "Lightning 1h",
+                        value: "\(viewModel.lightningLast1hr)"
+                    )
+                }
             }
         }
         .padding()
