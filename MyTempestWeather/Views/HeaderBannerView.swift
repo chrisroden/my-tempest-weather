@@ -47,12 +47,12 @@ struct HeaderBannerView: View {
     private var connectionStack: some View {
         HStack(spacing: 5) {
             Circle()
-                .fill(viewModel.isWebSocketConnected ? Color.green : Color.orange)
+                .fill(statusColor)
                 .frame(width: 8, height: 8)
             VStack(alignment: .trailing, spacing: 1) {
-                Text(viewModel.isWebSocketConnected ? "Live" : "Polling")
+                Text(statusText)
                     .font(.caption.bold())
-                    .foregroundStyle(viewModel.isWebSocketConnected ? .green : .orange)
+                    .foregroundStyle(statusColor)
                 if let updated = viewModel.lastUpdated {
                     Text(updated, format: .relative(presentation: .named))
                         .font(.caption2)
@@ -60,6 +60,17 @@ struct HeaderBannerView: View {
                 }
             }
         }
+    }
+
+    /// "Live"/"Polling" for the Tempest station; "Forecast" for WeatherKit locations.
+    private var statusText: String {
+        guard viewModel.isStationSelected else { return "Forecast" }
+        return viewModel.isWebSocketConnected ? "Live" : "Polling"
+    }
+
+    private var statusColor: Color {
+        guard viewModel.isStationSelected else { return .secondary }
+        return viewModel.isWebSocketConnected ? .green : .orange
     }
 }
 

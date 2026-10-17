@@ -139,8 +139,18 @@ All models are `Codable` with `CodingKeys` for snake_case JSON. Key models:
 
 ### ContentView layout strategy
 
-- **iPhone** (`UIDevice.current.userInterfaceIdiom == .phone`): `TabView` with Weather and Settings tabs
-- **iPad / Mac**: `NavigationSplitView` with sidebar + detail
+- **iPhone** (`UIDevice.current.userInterfaceIdiom == .phone`): `TabView` with Weather, Locations and Settings tabs
+- **iPad / Mac**: `NavigationSplitView` with sidebar (Dashboard, Locations, Settings) + detail
+
+### Multiple locations (WeatherKit)
+
+- `WeatherViewModel.selection` is `.station` (Tempest REST + WebSocket), `.currentLocation`, or `.saved(UUID)`; the last two use `WeatherKitService`.
+- `WeatherKitService` maps WeatherKit data into `ForecastResponse` in the user's units, with WeatherFlow icon slugs, so the dashboard views are unchanged. The lightning tile and live values only appear for the station.
+- `LocationsView` lists locations. Add by search (`LocationSearchView`, MapKit completer) or by tapping a map (`MapPickerView`). Swipe to delete.
+- Saved locations (with a MapKit-derived time zone) and the selection persist via `LocationStore` in `UserDefaults` (`WeatherFlow.savedLocations`, `WeatherFlow.selectedLocation`).
+- `WeatherAttributionView` shows the Apple Weather mark and legal link required by WeatherKit.
+- Requires the `com.apple.developer.weatherkit` entitlement plus WeatherKit enabled for the App ID in the developer portal.
+- The Tempest API itself can't serve arbitrary coordinates with a personal token (401). The official app uses a private Firebase-authenticated host.
 
 ### SettingsView
 
@@ -158,6 +168,8 @@ All models are `Codable` with `CodingKeys` for snake_case JSON. Key models:
 - [x] **Unit preferences UI** — `SettingsView` now exposes pickers for temperature, wind speed, pressure, and precipitation units, saved to `UserDefaults` and used by the next REST fetch.
 - [x] **Hourly forecast** — Tap any `DayCard` in `ForecastView` to expand a collapsible `HourlyStrip` below the day row; tap the same card again to collapse. Animated with `.easeInOut(duration: 0.3)` + `.move(edge: .top).combined(with: .opacity)` transition.
 - [ ] **Widgets / Live Activities** — not yet implemented.
+- [x] **Other locations** — Current Location, search and map-picked places via WeatherKit; the Tempest station stays the default.
+- [ ] **WeatherKit capability** — enable WeatherKit for `com.chrisroden.MyTempestWeather` in the Apple Developer portal (Identifiers → App ID → Capabilities and App Services).
 - [x] **Dark mode accent** — dark variant `#5BB8FF` (r:0.357, g:0.722, b:1.000) added to `AccentColor.colorset` with `luminosity: dark` appearance.
 
 ---

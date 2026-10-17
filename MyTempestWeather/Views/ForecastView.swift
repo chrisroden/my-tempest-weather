@@ -187,6 +187,7 @@ private struct HourCard: View {
         let date = Date(timeIntervalSince1970: TimeInterval(hour.time))
         let formatter = DateFormatter()
         formatter.dateFormat = "ha"
+        if let id = hour.timeZoneIdentifier { formatter.timeZone = TimeZone(identifier: id) }
         return formatter.string(from: date).lowercased()
     }
 

@@ -120,6 +120,8 @@ struct DailyForecast: Codable, Identifiable {
     let precipType: String
     let sunrise: Int
     let sunset: Int
+    /// Time zone used for labels. Set for WeatherKit locations; `nil` means the device time zone.
+    var timeZoneIdentifier: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case airTempHigh = "air_temp_high"
@@ -141,6 +143,7 @@ struct DailyForecast: Codable, Identifiable {
         let date = Date(timeIntervalSince1970: TimeInterval(dayStartLocal))
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE"
+        if let id = timeZoneIdentifier { formatter.timeZone = TimeZone(identifier: id) }
         return formatter.string(from: date).uppercased()
     }
 }
@@ -167,6 +170,8 @@ struct HourlyForecast: Codable, Identifiable {
     let windDirection: Int
     let windDirectionCardinal: String
     let windGust: Double
+    /// Time zone used for labels. Set for WeatherKit locations; `nil` means the device time zone.
+    var timeZoneIdentifier: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case airTemperature = "air_temperature"

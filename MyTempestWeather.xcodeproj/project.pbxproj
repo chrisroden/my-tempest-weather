@@ -24,6 +24,19 @@
 		B0010027 /* HeaderBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010026 /* HeaderBannerView.swift */; };
 		B0010029 /* TempestWebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010028 /* TempestWebSocketService.swift */; };
 		B001002A /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001002B /* WeatherIconView.swift */; };
+		B0010070 /* LocationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010071 /* LocationModels.swift */; };
+		B0010072 /* IWeatherKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010073 /* IWeatherKitService.swift */; };
+		B0010074 /* ILocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010075 /* ILocationService.swift */; };
+		B0010076 /* ILocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010077 /* ILocationStore.swift */; };
+		B0010078 /* ILocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010079 /* ILocationSearchService.swift */; };
+		B001007A /* LocationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001007B /* LocationStore.swift */; };
+		B001007C /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001007D /* LocationService.swift */; };
+		B001007E /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B001007F /* LocationSearchService.swift */; };
+		B0010080 /* WeatherKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010081 /* WeatherKitService.swift */; };
+		B0010082 /* LocationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010083 /* LocationsView.swift */; };
+		B0010084 /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010085 /* LocationSearchView.swift */; };
+		B0010086 /* MapPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010087 /* MapPickerView.swift */; };
+		B0010088 /* WeatherAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010089 /* WeatherAttributionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +59,19 @@
 		B0010028 /* TempestWebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempestWebSocketService.swift; sourceTree = "<group>"; };
 		B001002B /* WeatherIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconView.swift; sourceTree = "<group>"; };
 		B0010030 /* MyTempestWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTempestWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0010071 /* LocationModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModels.swift; sourceTree = "<group>"; };
+		B0010073 /* IWeatherKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IWeatherKitService.swift; sourceTree = "<group>"; };
+		B0010075 /* ILocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILocationService.swift; sourceTree = "<group>"; };
+		B0010077 /* ILocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILocationStore.swift; sourceTree = "<group>"; };
+		B0010079 /* ILocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILocationSearchService.swift; sourceTree = "<group>"; };
+		B001007B /* LocationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationStore.swift; sourceTree = "<group>"; };
+		B001007D /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		B001007F /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
+		B0010081 /* WeatherKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherKitService.swift; sourceTree = "<group>"; };
+		B0010083 /* LocationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsView.swift; sourceTree = "<group>"; };
+		B0010085 /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
+		B0010087 /* MapPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPickerView.swift; sourceTree = "<group>"; };
+		B0010089 /* WeatherAttributionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAttributionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +99,7 @@
 				9FA913B92F780668008AEE32 /* MyTempestWeather.entitlements */,
 				B001000B /* MyTempestWeatherApp.swift */,
 				B0010035 /* Models */,
+				B001008A /* Interfaces */,
 				B0010036 /* Services */,
 				B0010037 /* ViewModels */,
 				B0010038 /* Views */,
@@ -86,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				B001001B /* WeatherModels.swift */,
+				B0010071 /* LocationModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -95,6 +123,10 @@
 			children = (
 				B001001D /* TempestAPIService.swift */,
 				B0010028 /* TempestWebSocketService.swift */,
+				B001007B /* LocationStore.swift */,
+				B001007D /* LocationService.swift */,
+				B001007F /* LocationSearchService.swift */,
+				B0010081 /* WeatherKitService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -120,6 +152,10 @@
 				B0010025 /* SplashView.swift */,
 				B0010026 /* HeaderBannerView.swift */,
 				B001002B /* WeatherIconView.swift */,
+				B0010083 /* LocationsView.swift */,
+				B0010085 /* LocationSearchView.swift */,
+				B0010087 /* MapPickerView.swift */,
+				B0010089 /* WeatherAttributionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -130,6 +166,17 @@
 				B0010023 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B001008A /* Interfaces */ = {
+			isa = PBXGroup;
+			children = (
+				B0010073 /* IWeatherKitService.swift */,
+				B0010075 /* ILocationService.swift */,
+				B0010077 /* ILocationStore.swift */,
+				B0010079 /* ILocationSearchService.swift */,
+			);
+			path = Interfaces;
 			sourceTree = "<group>";
 		};
 		B003FFFF = {
@@ -225,6 +272,19 @@
 				B001001A /* WeatherModels.swift in Sources */,
 				B001001C /* TempestAPIService.swift in Sources */,
 				B001001E /* WeatherViewModel.swift in Sources */,
+				B0010070 /* LocationModels.swift in Sources */,
+				B0010072 /* IWeatherKitService.swift in Sources */,
+				B0010074 /* ILocationService.swift in Sources */,
+				B0010076 /* ILocationStore.swift in Sources */,
+				B0010078 /* ILocationSearchService.swift in Sources */,
+				B001007A /* LocationStore.swift in Sources */,
+				B001007C /* LocationService.swift in Sources */,
+				B001007E /* LocationSearchService.swift in Sources */,
+				B0010080 /* WeatherKitService.swift in Sources */,
+				B0010082 /* LocationsView.swift in Sources */,
+				B0010084 /* LocationSearchView.swift in Sources */,
+				B0010086 /* MapPickerView.swift in Sources */,
+				B0010088 /* WeatherAttributionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,12 +426,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Tempest Weather";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used to show the weather where you are.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chrisroden.MyTempestWeather;
@@ -400,12 +461,13 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Tempest Weather";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used to show the weather where you are.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chrisroden.MyTempestWeather;

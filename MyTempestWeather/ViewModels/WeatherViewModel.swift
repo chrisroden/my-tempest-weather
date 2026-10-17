@@ -1,9 +1,21 @@
 import Foundation
+import CoreLocation
 import Observation
+import WeatherKit
+import os
 
 @Observable
 @MainActor
 final class WeatherViewModel {
+
+    // MARK: - Locations
+
+    /// The location the dashboard shows. `.station` uses Tempest; anything else uses WeatherKit.
+    private(set) var selection: LocationSelection = .station
+    private(set) var savedLocations: [SavedLocation] = []
+
+    /// `true` when the Tempest station is selected (live WebSocket data is only available there).
+    var isStationSelected: Bool { selection == .station }
 
     // MARK: - REST state
 
@@ -28,6 +40,38 @@ final class WeatherViewModel {
 
     @ObservationIgnored private var refreshTask: Task<Void, Never>?
     @ObservationIgnored private var webSocketService: TempestWebSocketService?
+    @ObservationIgnored private let weatherKitService: IWeatherKitService
+    @ObservationIgnored private let locationService: ILocationService
+    @ObservationIgnored private let locationStore: ILocationStore
+
+    private static let logger = Logger(subsystem: "com.chrisroden.MyTempestWeather", category: "WeatherViewModel")
+
+    // MARK: - Init
+
+    /// Creates the view model and restores saved locations and the last selection.
+    /// - Parameters:
+    ///   - weatherKitService: Source for non-station locations.
+    ///   - locationService: Source for the device location and place details; a `LocationService` by default.
+    ///   - locationStore: Persistence for saved locations and the selection.
+    init(weatherKitService: IWeatherKitService = WeatherKitService(),
+         locationService: ILocationService? = nil,
+         locationStore: ILocationStore = LocationStore()) {
+        self.weatherKitService = weatherKitService
+        self.locationService = locationService ?? LocationService()
+        self.locationStore = locationStore
+        do {
+            savedLocations = try locationStore.loadSavedLocations()
+            let stored = try locationStore.loadSelection()
+            if case .saved(let id) = stored, !savedLocations.contains(where: { $0.id == id }) {
+                selection = .station
+            } else {
+                selection = stored
+            }
+        } catch {
+            Self.logger.error("Could not restore locations: \(error.localizedDescription, privacy: .public)")
+            errorMessage = "Saved locations could not be loaded."
+        }
+    }
 
     // MARK: - Configuration
 
@@ -136,13 +180,121 @@ final class WeatherViewModel {
     func refresh() async {
         isLoading = true
         errorMessage = nil
+        let requested = selection
         do {
-            forecastResponse = try await TempestAPIService().fetchForecast()
+            let response: ForecastResponse
+            switch requested {
+            case .station:
+                response = try await TempestAPIService().fetchForecast()
+            case .currentLocation:
+                let location = try await locationService.currentLocation()
+                let place = try? await locationService.placeDetails(for: location)
+                response = try await weatherKitService.fetchForecast(
+                    for: location,
+                    name: place?.name ?? "Current Location",
+                    timeZone: place?.timeZone ?? .current
+                )
+            case .saved(let id):
+                guard let saved = savedLocations.first(where: { $0.id == id }) else {
+                    throw LocationSelectionError.missing
+                }
+                response = try await weatherKitService.fetchForecast(
+                    for: saved.location, name: saved.name, timeZone: saved.timeZone
+                )
+            }
+            // Ignore results for a location the user has already switched away from.
+            guard requested == selection else { return }
+            forecastResponse = response
             lastUpdated = Date()
         } catch {
-            errorMessage = error.localizedDescription
+            if requested == selection { errorMessage = error.localizedDescription }
         }
-        isLoading = false
+        if requested == selection { isLoading = false }
+    }
+
+    // MARK: - Location management
+
+    /// Switches the dashboard to another location and refreshes it.
+    /// Starts the WebSocket for the station; stops it for anything else.
+    /// - Parameter newSelection: The location to show.
+    func select(_ newSelection: LocationSelection) async {
+        guard newSelection != selection else { return }
+        selection = newSelection
+        persistSelection()
+        forecastResponse = nil
+        lastUpdated = nil
+        if newSelection == .station {
+            startWebSocket()
+        } else {
+            stopWebSocket()
+        }
+        await refresh()
+    }
+
+    /// Adds a location to the saved list and selects it.
+    /// - Parameter location: The location to add.
+    func add(_ location: SavedLocation) async {
+        savedLocations.append(location)
+        persistSavedLocations()
+        await select(.saved(location.id))
+    }
+
+    /// Removes saved locations; falls back to the station if the selected one is removed.
+    /// - Parameter ids: Identifiers of the locations to remove.
+    func removeLocations(_ ids: Set<UUID>) async {
+        savedLocations.removeAll { ids.contains($0.id) }
+        persistSavedLocations()
+        if case .saved(let id) = selection, ids.contains(id) {
+            await select(.station)
+        }
+    }
+
+    /// Display name for a location in lists.
+    /// - Parameter selection: The location to name.
+    /// - Returns: The station's name, "Current Location", or the saved name.
+    func displayName(for selection: LocationSelection) -> String {
+        switch selection {
+        case .station:
+            if isStationSelected, let name = forecastResponse?.locationName { return name }
+            return "My Station"
+        case .currentLocation:
+            return "Current Location"
+        case .saved(let id):
+            return savedLocations.first(where: { $0.id == id })?.name ?? "Unknown"
+        }
+    }
+
+    /// Looks up a place name and time zone for a coordinate picked on the map.
+    /// - Parameter location: Coordinates to look up.
+    /// - Returns: The place name and time zone, either of which may be `nil`.
+    /// - Throws: The underlying geocoding error.
+    func placeDetails(for location: CLLocation) async throws -> PlaceDetails {
+        try await locationService.placeDetails(for: location)
+    }
+
+    /// Fetches the Apple Weather attribution shown with WeatherKit data.
+    /// - Returns: The attribution logos and legal page link.
+    /// - Throws: The underlying WeatherKit error.
+    func weatherAttribution() async throws -> WeatherAttribution {
+        try await weatherKitService.attribution()
+    }
+
+    private func persistSelection() {
+        do {
+            try locationStore.saveSelection(selection)
+        } catch {
+            Self.logger.error("Could not save selection: \(error.localizedDescription, privacy: .public)")
+            errorMessage = "Your location choice could not be saved."
+        }
+    }
+
+    private func persistSavedLocations() {
+        do {
+            try locationStore.saveSavedLocations(savedLocations)
+        } catch {
+            Self.logger.error("Could not save locations: \(error.localizedDescription, privacy: .public)")
+            errorMessage = "Your saved locations could not be saved."
+        }
     }
 
     func startAutoRefresh(intervalMinutes: Int = 5) {
@@ -165,7 +317,8 @@ final class WeatherViewModel {
     // MARK: - WebSocket
 
     func startWebSocket() {
-        guard let token = TempestAPIService.loadApiToken(),
+        guard isStationSelected,
+              let token = TempestAPIService.loadApiToken(),
               TempestAPIService.deviceId > 0 else { return }
         stopWebSocket()
         let service = TempestWebSocketService()
@@ -193,6 +346,19 @@ final class WeatherViewModel {
         webSocketService?.disconnect()
         webSocketService = nil
         isWebSocketConnected = false
+        clearLiveValues()
+    }
+
+    /// Drops live readings so they can't override another location's data.
+    private func clearLiveValues() {
+        liveWindSpeedMps = nil
+        liveWindGustMps = nil
+        liveWindDirectionDeg = nil
+        liveAirTempC = nil
+        liveHumidity = nil
+        livePressureMb = nil
+        liveUV = nil
+        livePrecipDayMm = nil
     }
 
     // MARK: - Unit conversion
@@ -223,6 +389,15 @@ final class WeatherViewModel {
     }
 
     deinit { refreshTask?.cancel() }
+}
+
+// MARK: - Errors
+
+/// Errors raised when the selected location can't be resolved.
+enum LocationSelectionError: LocalizedError {
+    case missing
+
+    var errorDescription: String? { "The selected location no longer exists." }
 }
 
 // MARK: - Array helper
